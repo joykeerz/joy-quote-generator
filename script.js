@@ -4,9 +4,25 @@ const quoteText = document.getElementById('quote');
 const authorText = document.getElementById('author');
 const twitterBtn = document.getElementById('twitter');
 const newQuoteBtn = document.getElementById('new-quote');
+const loader = document.getElementById('loader');
+
+///show loading
+function loading(){
+    loader.hidden = false;
+    quoteContainer.hidden = true;
+}
+
+///hide loading
+function complete(){
+    if(!loader.hidden){
+        quoteContainer.hidden = false;
+        loader.hidden = true;
+    }
+}
 
 ///Show New Quote
 function newQuote(){
+    
     // ambil angka random untuk ambil quote random
     const quote =  apiQuotes[Math.floor(Math.random() * apiQuotes.length)]
     console.log(quote);
@@ -26,10 +42,14 @@ function newQuote(){
     }
 
     quoteText.innerText = quote.text;
+    
 }
 
 /// GET from API
 async function getQuote(){
+    // jalanin loading
+    loading();
+    
     //cors error solution 1
     const proxyURL = 'https://cors-anywhere.herokuapp.com/';
 
@@ -52,6 +72,9 @@ async function getQuote(){
 
      //ambil 1 quote
      newQuote();
+
+     //ilangin loading
+     complete();
  } catch (error) {
      //kalo error bakal ngejalanin ini
      getQuote();
